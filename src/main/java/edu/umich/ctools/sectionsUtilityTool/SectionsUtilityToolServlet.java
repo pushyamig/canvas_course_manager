@@ -231,15 +231,21 @@ public class SectionsUtilityToolServlet extends VelocityViewServlet {
 	public void storeContext(Context context, HttpServletRequest request) {
 		Map<String, String> ltiValues = new HashMap<String, String>();
 
-		ViewToolContext vtc = (ViewToolContext)context;
+		ViewToolContext vtc = (ViewToolContext) context;
 		HttpServletResponse response = vtc.getResponse();
-		HttpSession session= request.getSession(true);
-		M_log.debug("session id: "+session.getId());
+		HttpSession session = request.getSession(true);
+		M_log.debug("session id: " + session.getId());
 		CanvasAccountAdminFinder adminFinder = new CanvasAccountAdminFinder();
 		boolean admin = adminFinder.isAccountAdmin(request);
 		if (admin) {
 			M_log.info(String.format("The user \"%s\" is account admin in the course %s",
 					request.getParameter(Utils.LTI_PARAM_UNIQNAME), request.getParameter(Utils.LTI_PARAM_CANVAS_COURSE_ID)));
+		}
+
+		Map<String, String> env = System.getenv();
+		M_log.info("Size of the enironmental variables " + env.size());
+		for (String envName : env.keySet()) {
+				M_log.info(envName);
 		}
 
 		HashMap<String, Object> customValuesMap = new HashMap<>();
@@ -253,6 +259,7 @@ public class SectionsUtilityToolServlet extends VelocityViewServlet {
 		customValuesMap.put(Utils.LTI_PARAM_CANVAS_USER_ID, request.getParameter(Utils.LTI_PARAM_CANVAS_USER_ID));
 		customValuesMap.put(Utils.SESSION_ROLES_FOR_ADDING_TEACHER, appExtPropertiesFile.getProperty(ROLE_CAN_ADD_TEACHER));
 		customValuesMap.put(Utils.IS_ACCOUNT_ADMIN, String.valueOf(admin));
+
 
 		TcSessionData tc = (TcSessionData) session.getAttribute(Utils.TC_SESSION_DATA);
 
