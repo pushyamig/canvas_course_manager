@@ -45,6 +45,7 @@ ENV JAVA_OPTS="-server \
 -Djava.awt.headless=true -Dcom.sun.management.jmxremote \
 -Dsun.lang.ClassLoader.allowArraySyntax=true \
 -Dfile.encoding=UTF-8 \
+-Djavax.net.debug=ssl \
 -DccmPropsPathSecure=file:$CATALINA_HOME/conf/ccm-secure.properties \
 -DccmPropsPath=file:$CATALINA_HOME/conf/ccm.properties \
 -Dlog4j.configuration=file:/usr/local/tomcat/conf/log4j.properties \

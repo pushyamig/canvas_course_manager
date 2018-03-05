@@ -90,6 +90,7 @@ public class Friend
 	}
 
 	public void setProperties(){
+		M_log.debug("Friends setProperties()");
 		if(appExtSecureProperties!=null) {
 			//PropertiesFile information
 			friendUrl = appExtProperties.getProperty(FRIEND_URL);
@@ -118,17 +119,20 @@ public class Friend
 		String trustStoreType = (String) systemProps.get("javax.net.ssl.trustStoreType");
 		if (keyStoreType != null && !KEYSTORETYPE_PKCS12.equals(keyStoreType)) // existing keyStoreType 
 		{
+			M_log.debug("First PKCS12");
 			M_log.error(this + " setProperties: existing settings of SSL keyStoreType mismatch: " + keyStoreType );
 			sslInitialized = false;
 		}
 		else if (trustStoreType != null  && !TRUSTSTORETYPE_JKS.equals(trustStoreType)) // existing trustStoreType
 		{
+			M_log.debug("Second JKS logic");
 			M_log.error(this + " init: existing settings of SSL trustStoretype mismatch: " + trustStoreType );
 			sslInitialized = false;
 		}
 		else
 		{	
 			// key store
+			M_log.debug("Third PKC/JKS logic");
 			systemProps.put("javax.net.ssl.keyStoreType", KEYSTORETYPE_PKCS12);
 			systemProps.put("javax.net.ssl.trustStoreType", TRUSTSTORETYPE_JKS);
 
@@ -175,6 +179,10 @@ public class Friend
 			//systemProps.remove("javax.net.debug");
 			//important: http://stackoverflow.com/questions/6680416/apache-cxf-exception-in-ssl-communication-sockettimeout
 			//java.lang.System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
+			M_log.debug("keyStoreType "+systemProps.getProperty("javax.net.ssl.keyStoreType"));
+			M_log.debug("trustStoreType "+systemProps.getProperty("javax.net.ssl.trustStoreType"));
+			M_log.debug("keyStore "+systemProps.getProperty("javax.net.ssl.keyStore"));
+			M_log.debug("keyStorePassword "+systemProps.getProperty("javax.net.ssl.keyStorePassword"));
 			systemProps.remove("javax.net.ssl.keyStoreType");
 			systemProps.remove("javax.net.ssl.trustStoreType");
 			systemProps.remove("javax.net.ssl.keyStore");
